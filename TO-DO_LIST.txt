@@ -1,0 +1,57 @@
+OKAY LETSGO
+
+
+================== [GAMEPLAY] ==================
+
+		Sound-based horror game.
+		Close to no visual stimuli. Only sound.
+
+		Real game design pitch :
+
+		Move in a corridor straight line "123 Slaughter Me Street" style. The corridor has doors on each sides spawning randomly.
+		Reach the end of the corridor to escape. The corridor is fully black so the player must periodically flash to see.
+		
+		The player has one mobile phone with different options: Flash, Reject Call, Accept Call (insta jumpscare) and 
+		The player can't move when the phone is pulled up.
+
+		The flash has a rising pitch noise that ends in a blip to indicate that the flash is recharged (2s?).
+
+		Only one corridor with the enemies activating at certain threshold to make a one-level tutorial included.
+		Final duration around 5-10m if not speedruned
+		
+
+		Different enemies only with audio cues:
+			
+			The Voltergeist (5%):
+			- Phone beeping slowly and getting faster and faster. Pulling up the phone and pressing the "Reject Call" button on the phone puts the beep back at the slowest stage. If it goes to the max then she will jumpscare you.
+			
+			The Follower (10%):
+			- Footsteps behind you. Turn around and flash him to push him away. Don't and he'll kill you
+
+			The Brazen (Made of Brass/Copper) (20%):
+			- Dull & muffled "pipe-based machinery" sound from doors. Flash in front of you before passing in front of the door to trigger his trap and move safely.
+
+			The Eleventh (30%):
+			- If the music starts looping a small portion then  
+
+			The Witness (40%):
+			- If breathing close to a door, 
+
+
+		
+
+================== [AUDIO] ==================
+
+
+
+================== [CODING] ==================
+
+
+
+================== [VISUALS] ==================
+
+
+
+================== [OTHER] ==================
+
+
