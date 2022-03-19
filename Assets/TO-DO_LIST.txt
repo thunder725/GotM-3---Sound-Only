@@ -11,7 +11,7 @@ OKAY LETSGO
 		Move in a corridor straight line "123 Slaughter Me Street" style. The corridor has doors on each sides spawning randomly.
 		Reach the end of the corridor to escape. The corridor is fully black so the player must periodically flash to see.
 		
-		The player has one mobile phone with different options: Flash, Reject Call, Accept Call (insta jumpscare) and 
+		The player has one mobile phone with different options: Flash, Reject Call, Accept Call (insta jumpscare) and Switch Track.
 		The player can't move when the phone is pulled up.
 
 		The flash has a rising pitch noise that ends in a blip to indicate that the flash is recharged (2s?).
@@ -26,31 +26,80 @@ OKAY LETSGO
 			- Phone beeping slowly and getting faster and faster. Pulling up the phone and pressing the "Reject Call" button on the phone puts the beep back at the slowest stage. If it goes to the max then she will jumpscare you.
 			
 			The Follower (10%):
-			- Footsteps behind you. Turn around and flash him to push him away. Don't and he'll kill you
+			- Footsteps behind you. Turn around and flash him to push him away. Don't and he'll kill you.
 
 			The Brazen (Made of Brass/Copper) (20%):
 			- Dull & muffled "pipe-based machinery" sound from doors. Flash in front of you before passing in front of the door to trigger his trap and move safely.
 
 			The Eleventh (30%):
-			- If the music starts looping a small portion then  
+			- If the music starts looping a small portion then the player must switch track.
 
 			The Witness (40%):
-			- If breathing close to a door, 
+			- If breathing close to a door, stay there until the breathing stops (3-5 seconds).
 
 
-		
+
 
 ================== [AUDIO] ==================
 
+	- Player steps
+	- Ambiance Sounds (x2)
+	- Follower Rushing footsteps
+	- Brazen Machinery sounds
+	- Witness Breathing
+	
+	- Main Ambiance Music x3
+	- Main menu ambiance (no music)
+	
+	- Main Menu UI Button mouseover
+	- Main Menu UI Button Click
 
 
 ================== [CODING] ==================
 
-
+	- Everything
 
 ================== [VISUALS] ==================
 
+	Placeholder Models :
+		- The Voltergeist
+		- The Follower
+		- The Brazen
+		- The Eleventh
+		- The Witness
+		- Start/End Doors
 
+	3D Models :
+			- Phone + Hand
+
+		Enemies
+			- The Voltergeist
+			- The Follower
+			- The Brazen
+			- The Eleventh
+			- The Witness
+
+		Level Builder
+			- Walls
+			- Door Walls
+			- Ceiling Tiles
+			- Ground Tiles
+			- Start/End Doors
+
+		Props:
+			- Pipes
+			- Lights
+			- Mailboxes
+
+	Jumpscares :
+		- The Voltergeist
+		- The Follower
+		- The Brazen
+		- The Eleventh
+		- The Witness
+
+	Particles :
+		- ???
 
 ================== [OTHER] ==================
 
