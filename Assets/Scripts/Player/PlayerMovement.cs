@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float cameraHeightMultiplicator, cameraWalkSpeed;
     [SerializeField] float fogReappearanceSpeed, turnaroundSpeed;
+    [SerializeField] float followerFlashRange, followerPushDistance;
     bool isTurningAround, isLookingForward;
 
     [Header("Phone-Related")]
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] GameManager gm;
     [SerializeField] GameObject Phone;
+    [SerializeField] LayerMask FollowerLayer;
 
     // ============= [GENERAL UNITY METHODS] ===============
     
@@ -263,12 +265,31 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isPhoneUp && _phone.isFlashReady)
         {
+            // Not entirely 0 so it still looks realistic, somewhat
             RenderSettings.fogDensity = 0.002f;
             ResetFogDensity = true;
 
+            // Pull down the phone to prevent the flash's visibility to be useless
             PullUpPhone();
 
+            // Play the sound
             _phone.PlayFlashSound();
+
+            // If i'm looking back
+            if (!isLookingForward)
+            {
+                Debug.Log("Raycasting");
+                Vector3 fromPos = transform.position + Vector3.up * 3;
+
+                // Check if The Follower is here
+                if (Physics.Raycast(fromPos, Vector3.back, out RaycastHit _hit ,followerFlashRange, FollowerLayer))
+                {
+                    Debug.Log("Hit");
+                    // Push it back
+                    _hit.transform.position += Vector3.back * followerPushDistance;
+                }
+            }
+            
         }
     }
 
@@ -283,6 +304,10 @@ public class PlayerMovement : MonoBehaviour
             EnteringThreshold(trigger.gameObject.name);
             break;
 
+            case "The_Follower":
+            trigger.transform.position = Vector3.up * 500;
+            Debug.LogError("THE FOLLOWER KILLED YOU");
+            break;
 
             default:
             // Debug.Log("Entered a non-configured trigger: " + trigger.gameObject.name);
@@ -354,5 +379,10 @@ public class PlayerMovement : MonoBehaviour
         {
             RenderSettings.fog = !RenderSettings.fog;
         }
+    }
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up * 3, transform.position + Vector3.back * followerFlashRange + Vector3.up * 3);
     }
 }
