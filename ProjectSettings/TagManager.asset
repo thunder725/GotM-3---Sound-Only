@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Thresholds
   - The_Follower
+  - The_Witness
+  - The_Brazen
+  - The_Voltergeist
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - The_Follower
+  - LightSensitive
   - 
   - 
   - 

@@ -18,7 +18,7 @@ OKAY LETSGO
 
 		Only one corridor with the enemies activating at certain threshold to make a one-level tutorial included.
 		Final duration around 5-10m if not speedruned
-		
+
 
 		Different enemies only with audio cues:
 			
@@ -54,10 +54,9 @@ OKAY LETSGO
 	- Main Menu UI Button mouseover
 	- Main Menu UI Button Click
 
-
 ================== [CODING] ==================
 
-	- Everything
+	- A little bit less then everything
 
 ================== [VISUALS] ==================
 

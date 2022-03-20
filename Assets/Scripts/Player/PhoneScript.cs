@@ -15,6 +15,9 @@ public class PhoneScript : MonoBehaviour
 
     public bool isFlashReady {get{return !FlashBeaconAudio.isPlaying;}}
 
+    [SerializeField] GameObject VoltergeistObject;
+    PlayerMovement playerScript;
+
     
     [Header("Sounds")]
     [SerializeField] AudioClip FlashBeaconClip;
@@ -45,12 +48,17 @@ public class PhoneScript : MonoBehaviour
         FlashBeaconAudio.playOnAwake = false;
         FlashBeaconAudio.loop = false;
         FlashBeaconAudio.volume = .7f;
+
+        // Referencing the player
+        playerScript = transform.root.GetComponent<PlayerMovement>();
     }
 
     void Start()
     {
         // Set at maximum at the start
         currentPhoneBeepCooldown = phoneBeepCooldownRange.x;
+
+        GameManager.PlayerKilled += PlayerKilled;
     }
 
     void Update()
@@ -153,15 +161,39 @@ public class PhoneScript : MonoBehaviour
 
     void DecreaseBeepCooldown()
     {
-        // Reduce by the Speed (in seconds removed per second) + or - 50% each frame
-        // Increase the difficulty as the player reaches the end (0 to 30% of a fraction of the percentage of the distance travelled)
-        // And slightly reduce the reduction speed when getting close to the end of the spectum
-        currentPhoneBeepCooldown -= phoneBeepReductionSpeed + ((Random.value - .5f) * phoneBeepReductionSpeed) + ((Random.value * .5f) * (transform.position.x / GameManager.EndCoordinateValue * .2f)) - (Random.value * .05f / currentPhoneBeepCooldown);
-        currentPhoneBeepCooldown = Mathf.Clamp(currentPhoneBeepCooldown, phoneBeepCooldownRange.y, phoneBeepCooldownRange.x);
-
-        if (currentPhoneBeepCooldown == phoneBeepCooldownRange.y)
+        if (!GameManager.PlayerDead)
         {
-            Debug.LogError("VOLTERGEIST KILLED YOU");
+            // Reduce by the Speed (in seconds removed per second) + or - 50% each frame
+            // Increase the difficulty as the player reaches the end (0 to 30% of a fraction of the percentage of the distance travelled)
+            // And slightly reduce the reduction speed when getting close to the end of the spectum
+            currentPhoneBeepCooldown -= phoneBeepReductionSpeed + ((Random.value - .5f) * phoneBeepReductionSpeed) + ((Random.value * .5f) * (transform.position.x / GameManager.EndCoordinateValue * .2f)) - (Random.value * .05f / currentPhoneBeepCooldown);
+            currentPhoneBeepCooldown = Mathf.Clamp(currentPhoneBeepCooldown, phoneBeepCooldownRange.y, phoneBeepCooldownRange.x);
+
+            if (currentPhoneBeepCooldown == phoneBeepCooldownRange.y)
+            {
+                VoltergeistKill();
+            }
         }
+    }
+
+    public void VoltergeistKill()
+    {
+        Debug.LogError("VOLTERGEIST KILLED YOU");
+
+        VoltergeistObject.transform.position = transform.position + Vector3.forward * 2;
+
+        GameManager.KillPlayer();
+    }
+
+    void PlayerKilled()
+    {
+        currentBeepTimer = Mathf.Infinity;
+    }
+
+
+    // =========== [OTHER] ============
+    void OnDestroy()
+    {
+        GameManager.PlayerKilled -= PlayerKilled;
     }
 }

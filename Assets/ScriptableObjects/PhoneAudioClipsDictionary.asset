@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioClips:
   - name: PhoneBeep
-    audioClip: {fileID: 8300000, guid: 5484db81d467944478220890f144c10d, type: 3}
-    volume: 0.35
+    audioClip: {fileID: 8300000, guid: 5e5bbed9a5df62c4d98a4043855c27d5, type: 3}
+    volume: 0.04
     pitch: 1
   - name: FlashReloadFinished
     audioClip: {fileID: 8300000, guid: 8d4fed7332f6680448c029aa0fd4d332, type: 3}

@@ -11,7 +11,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text EnemySpawnedText;
     [SerializeField] GameObject PhoneVoltergeistPanel, PhoneEleventhPanel;
     public static float EndCoordinateValue;
-    public static bool VoltergeistSpawned, FollowerSpawned, BrazenSpawned, EleventhSpawned, WitnessSpawned;
+    public static bool VoltergeistSpawned, FollowerSpawned, BrazenSpawned, EleventhSpawned, WitnessSpawned, PlayerDead;
+
+    public static UnityAction PlayerKilled;
+
+    public static void KillPlayer()
+    {
+        PlayerDead = true;
+        PlayerKilled.Invoke();
+    }
 
     void Awake()
     {
@@ -23,6 +31,8 @@ public class GameManager : MonoBehaviour
     {
         PhoneVoltergeistPanel.SetActive(false);
         PhoneEleventhPanel.SetActive(false);
+
+        GameManager.PlayerDead = false;
     }
 
     public void SpawnVoltergeist()

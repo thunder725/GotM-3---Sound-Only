@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float cameraHeightMultiplicator, cameraWalkSpeed;
     [SerializeField] float fogReappearanceSpeed, turnaroundSpeed;
-    [SerializeField] float followerFlashRange, followerPushDistance;
+    [SerializeField] float followerFlashRange, followerPushDistance, forwardFlashRange;
     bool isTurningAround, isLookingForward;
 
     [Header("Phone-Related")]
@@ -21,10 +21,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float phoneMovementSpeed;
     [SerializeField] bool isPhoneUp;
 
-    bool ResetFogDensity;
+    bool ResetFogDensity, isPhoneVisible; // PhoneVisible = either up or moving (up or down)
 
     // A nice value is 0.037 if wanted
-    // float defaultFogDensity;
+    float defaultFogDensity;
 
     // 1 for up, -1 for down
     float phoneDirection;
@@ -37,7 +37,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] GameManager gm;
     [SerializeField] GameObject Phone;
-    [SerializeField] LayerMask FollowerLayer;
+    // Layer Mask for The Follower, The Witness and The Brazen that all react to the flash
+    [SerializeField] LayerMask LightSensitiveLayers;
+    [SerializeField] The_Eleventh eleventh;
 
     // ============= [GENERAL UNITY METHODS] ===============
     
@@ -50,9 +52,9 @@ public class PlayerMovement : MonoBehaviour
         inputs.Default.Flash.started += Flash;
         inputs.Default.DisableFog.started += DisableFog;
         inputs.Default.RejectCall.started += RejectCall;
+        inputs.Default.AcceptCall.started += AcceptCall;
         inputs.Default.TurnAround.started += TurnAround_Input;
-
-        // defaultFogDensity = RenderSettings.fogDensity;
+        inputs.Default.SwitchTrack.started += SwitchTrack;
     }
 
     void Start()
@@ -66,8 +68,11 @@ public class PlayerMovement : MonoBehaviour
         phoneDirection = -1;
 
         // Reset the boolean variables
-        isPhoneUp = isTurningAround = false;
+        isPhoneUp = isPhoneVisible = isTurningAround = false;
         isLookingForward = true;
+
+        // Get the current fog density value
+        defaultFogDensity = RenderSettings.fogDensity;
     }
     
     void Update()
@@ -75,8 +80,8 @@ public class PlayerMovement : MonoBehaviour
         // Save the inputs in a pre-made variable because it's used every frame so no need to create one every frame
         movementInputs = inputs.Default.Move.ReadValue<float>();
 
-        // Don't even listen to the inputs if the phone is up
-        if (!isPhoneUp)
+        // Don't even listen to the inputs if the phone is moving
+        if (!isPhoneVisible && !GameManager.PlayerDead)
         {
             if (movementInputs > 0)
             {
@@ -90,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (ResetFogDensity)
         {
-            if (RenderSettings.fogDensity < .18f)
+            if (RenderSettings.fogDensity < defaultFogDensity)
             {
                 RenderSettings.fogDensity += Time.deltaTime * fogReappearanceSpeed;
             }
@@ -118,9 +123,9 @@ public class PlayerMovement : MonoBehaviour
 
     void TurnAround_Input(InputAction.CallbackContext callbackContext)
     {
-        if (!isTurningAround && !isPhoneUp)
+        if (!isTurningAround && !isPhoneVisible && !GameManager.PlayerDead)
         {
-            Debug.Log("Starting Turn");
+            // Debug.Log("Starting Turn");
             StartCoroutine(TurnAround());
         }
     }
@@ -179,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
 
     void PullUpPhone()
     {
-        if (!isTurningAround)
+        if (!isTurningAround && !GameManager.PlayerDead)
         {
             // Both pulling up and down the phone
 
@@ -204,6 +209,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void AcceptCall(InputAction.CallbackContext c)
+    {
+        if (isPhoneUp && GameManager.VoltergeistSpawned)
+        {
+            PullUpPhone();
+            _phone.VoltergeistKill();
+        }
+    }
+
     IEnumerator PhoneMovementCoroutine()
     {
         // Create the temporary new position
@@ -216,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
         if (phoneDirection == 1)
         {
             // Prevent movement
-            isPhoneUp = true;
+            isPhoneVisible = true;
 
             // While the phone is not at the top
             while (Phone.transform.localPosition.y != phoneVisiblePosition.y)
@@ -233,11 +247,17 @@ public class PlayerMovement : MonoBehaviour
                 // Wait for the next frame
                 yield return new WaitForEndOfFrame();
             }
+            
+            // Say the phone is up
+            isPhoneUp = true;
         }
 
         // If the phone should go down
         else
         {
+            // Say the phone is down, but still visible
+            isPhoneUp = false;
+
             // While the phone is not at the top
             while (Phone.transform.localPosition.y != 3)
             {
@@ -254,11 +274,13 @@ public class PlayerMovement : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
 
-            isPhoneUp = false;
+            // The phone is now hidden
+            isPhoneVisible = false;
         }
 
         StopCoroutine(PhoneMovementCoroutine());
         yield return null;
+
     }
 
     void Flash(InputAction.CallbackContext c)
@@ -278,18 +300,60 @@ public class PlayerMovement : MonoBehaviour
             // If i'm looking back
             if (!isLookingForward)
             {
-                Debug.Log("Raycasting");
-                Vector3 fromPos = transform.position + Vector3.up * 3;
-
-                // Check if The Follower is here
-                if (Physics.Raycast(fromPos, Vector3.back, out RaycastHit _hit ,followerFlashRange, FollowerLayer))
-                {
-                    Debug.Log("Hit");
-                    // Push it back
-                    _hit.transform.position += Vector3.back * followerPushDistance;
-                }
+                // Search for The Follower
+                FlashForFollower();
+            }
+            else
+            {
+                // Search for The Witness and The Brazen
+                FlashForWitnessAndBrazen();
             }
             
+        }
+    }
+
+    void FlashForFollower()
+    {
+        // Debug.Log("Searching for The Follower");
+        Vector3 fromPos = transform.position + Vector3.up * 3;
+
+        // Check if The Follower is here
+        if (Physics.Raycast(fromPos, Vector3.back, out RaycastHit _hit ,followerFlashRange, LightSensitiveLayers))
+        {
+            // Debug.Log("Hit");
+            // Push it back
+            _hit.transform.position += Vector3.back * followerPushDistance;
+        }
+    }
+
+    void FlashForWitnessAndBrazen()
+    {
+        // Debug.Log("Searching for The Witness and The Brazen");
+
+        Vector3 fromPos = transform.position + Vector3.up * 3;
+
+        // Check if The Witness or The Brazen are here
+        if (Physics.Raycast(fromPos, Vector3.forward, out RaycastHit _hit, forwardFlashRange, LightSensitiveLayers))
+        {
+            // Debug.Log("Hit");
+            
+            // If I hit The Witness
+            if (_hit.transform.gameObject.tag == "The_Witness")
+            {
+                var _script = _hit.transform.gameObject.GetComponent<The_Witness>();
+                _script.Flashed();
+            }
+            // If I hit The Brazen
+            else if (_hit.transform.gameObject.tag == "The_Brazen") 
+            {
+                var _script = _hit.transform.gameObject.GetComponent<The_Brazen>();
+                _script.Flashed();
+            }
+            // If I hit... something else??
+            else
+            {
+                Debug.LogWarning("Hit an unknown object " + _hit.transform.gameObject.name + ".");
+            }
         }
     }
 
@@ -307,6 +371,15 @@ public class PlayerMovement : MonoBehaviour
             case "The_Follower":
             trigger.transform.position = Vector3.up * 500;
             Debug.LogError("THE FOLLOWER KILLED YOU");
+            GameManager.KillPlayer();
+            break;
+
+            case "The_Witness":
+            trigger.gameObject.GetComponent<The_Witness>().Flashed();
+            break;
+
+            case "The_Brazen":
+            trigger.gameObject.GetComponent<The_Brazen>().KillPlayer();
             break;
 
             default:
@@ -361,6 +434,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void SwitchTrack(InputAction.CallbackContext c )
+    {
+        eleventh.AttackDisarmed();
+        PullUpPhone();
+    }
+
 
     // =============== [OTHER] ================
     void OnDestroy()
@@ -368,9 +447,11 @@ public class PlayerMovement : MonoBehaviour
         inputs.Disable();
         inputs.Default.PullUpPhone.started -= PullUpPhone_Input;
         inputs.Default.RejectCall.started -= RejectCall;
+        inputs.Default.AcceptCall.started -= AcceptCall;
         inputs.Default.Flash.started -= Flash;
         inputs.Default.DisableFog.started -= DisableFog;
         inputs.Default.TurnAround.started -= TurnAround_Input;
+        inputs.Default.SwitchTrack.started -= SwitchTrack;
     }
 
     void DisableFog(InputAction.CallbackContext c)
@@ -384,5 +465,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position + Vector3.up * 3, transform.position + Vector3.back * followerFlashRange + Vector3.up * 3);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position + Vector3.up * 3, transform.position + Vector3.forward * forwardFlashRange + Vector3.up * 3);
     }
 }
