@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] GameManager gm;
     [SerializeField] GameObject Phone;
+    [SerializeField] GameObject escapePanel;
     // Layer Mask for The Follower, The Witness and The Brazen that all react to the flash
     [SerializeField] LayerMask LightSensitiveLayers;
     [SerializeField] The_Eleventh eleventh;
@@ -76,6 +77,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Get the current fog density value
         defaultFogDensity = RenderSettings.fogDensity;
+
+        escapePanel.SetActive(false);
     }
     
     void Update()
@@ -439,6 +442,15 @@ public class PlayerMovement : MonoBehaviour
             break;
 
             case "100%":
+            // Basically the same effect as escaping
+            escapePanel.SetActive(true);
+            GameManager.KillPlayer();
+
+            // Stop the music. Very dirty code but no time for that lol
+            foreach (AudioSource a in FindObjectOfType<The_Eleventh>().gameObject.GetComponents<AudioSource>())
+            {
+                a.Stop();
+            }
             break;
         }
     }
