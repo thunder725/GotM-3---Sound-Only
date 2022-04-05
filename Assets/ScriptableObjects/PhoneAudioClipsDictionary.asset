@@ -15,9 +15,9 @@ MonoBehaviour:
   AudioClips:
   - name: PhoneBeep
     audioClip: {fileID: 8300000, guid: 5e5bbed9a5df62c4d98a4043855c27d5, type: 3}
-    volume: 0.04
+    volume: 0.05
     pitch: 1
   - name: FlashReloadFinished
     audioClip: {fileID: 8300000, guid: 8d4fed7332f6680448c029aa0fd4d332, type: 3}
-    volume: 0.2
+    volume: 0.25
     pitch: 1.1

@@ -123,7 +123,9 @@ public class The_Eleventh : MonoBehaviour
         GameManager.KillPlayer();
 
         // Temporary JustMoveInFrontOfMe
-        transform.position = PlayerRef.transform.position + Vector3.forward * 4 + Vector3.up * 4;
+        transform.position = PlayerRef.transform.position + Vector3.forward * 2 + Vector3.up * 4.3f;
+
+        StartCoroutine(FindObjectOfType<JumpscareManager>().JumpscareCoroutine(gameObject, "Eleventh"));
 
         Debug.LogError("THE ELEVENTH KILLED YOU");
     }

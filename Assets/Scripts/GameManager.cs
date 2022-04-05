@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public static UnityAction PlayerKilled;
 
+    AudioSource newCharacterSpawnedSource;
+
     public static void KillPlayer()
     {
         PlayerDead = true;
@@ -25,6 +27,9 @@ public class GameManager : MonoBehaviour
     {
         // Set the EndCoordinateValue for everybody, but make sure it's a multiple of 10
         EndCoordinateValue = 10*(int)(_endLineValue/10);
+
+        // Get reference
+        newCharacterSpawnedSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -33,6 +38,7 @@ public class GameManager : MonoBehaviour
         PhoneEleventhPanel.SetActive(false);
 
         GameManager.PlayerDead = false;
+        VoltergeistSpawned = FollowerSpawned = EleventhSpawned = WitnessSpawned = BrazenSpawned = false;
     }
 
     public void SpawnVoltergeist()
@@ -41,6 +47,8 @@ public class GameManager : MonoBehaviour
         VoltergeistSpawned = true;
 
         PhoneVoltergeistPanel.SetActive(true);
+        
+        newCharacterSpawnedSource.Play();
 
     }
 
@@ -49,6 +57,7 @@ public class GameManager : MonoBehaviour
         EnemySpawnedText.text += "Follower Spawned\n";
         FollowerSpawned = true;
 
+        newCharacterSpawnedSource.Play();
     }
 
     public void SpawnBrazen()
@@ -56,6 +65,7 @@ public class GameManager : MonoBehaviour
         EnemySpawnedText.text += "Brazen Spawned\n";
         BrazenSpawned = true;
 
+        newCharacterSpawnedSource.Play();
     }
 
     public void SpawnEleventh()
@@ -65,6 +75,8 @@ public class GameManager : MonoBehaviour
 
         PhoneEleventhPanel.SetActive(true);
 
+        newCharacterSpawnedSource.Play();
+
     }
 
     public void SpawnWitness()
@@ -72,6 +84,7 @@ public class GameManager : MonoBehaviour
         EnemySpawnedText.text += "Witness Spawned\n";
         WitnessSpawned = true;
 
+        newCharacterSpawnedSource.Play();
     }
 
 

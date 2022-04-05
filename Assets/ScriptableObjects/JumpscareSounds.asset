@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea22fbec24b05c4f8472523e1e6123e, type: 3}
+  m_Name: JumpscareSounds
+  m_EditorClassIdentifier: 
+  AudioClips:
+  - name: Jumpscare Sound 1
+    audioClip: {fileID: 8300000, guid: 227f9b7898ecd624cbe07eecea661970, type: 3}
+    volume: 1
+    pitch: 1
+  - name: Jumpscare Sound 2
+    audioClip: {fileID: 8300000, guid: befa7568e6bb3524e9c246deaa34318c, type: 3}
+    volume: 0.75
+    pitch: 0.95

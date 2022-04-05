@@ -17,6 +17,8 @@ public class The_Brazen : MonoBehaviour
 
     [SerializeField] float RushingSpeed;
 
+    [SerializeField] Sprite frontJumpscareSprite;
+
     // ======================== [DEFAULT UNITY METHODS] ========================
     void Awake() // I generally use the awake for references and start for the values
     {
@@ -98,8 +100,7 @@ public class The_Brazen : MonoBehaviour
 
     public void KillPlayer()
     {
-        transform.position = PlayerRef.transform.position + Vector3.forward * 4 + Vector3.up * 4;
-        GameManager.KillPlayer();
+        GetComponent<SpriteRenderer>().sprite = frontJumpscareSprite;
     }
 
     IEnumerator GoToNextPosition()

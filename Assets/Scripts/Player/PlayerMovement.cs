@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     // Layer Mask for The Follower, The Witness and The Brazen that all react to the flash
     [SerializeField] LayerMask LightSensitiveLayers;
     [SerializeField] The_Eleventh eleventh;
+    JumpscareManager jumpscareManager;
 
     // ============= [GENERAL UNITY METHODS] ===============
     
@@ -55,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
         inputs.Default.AcceptCall.started += AcceptCall;
         inputs.Default.TurnAround.started += TurnAround_Input;
         inputs.Default.SwitchTrack.started += SwitchTrack;
+
+        jumpscareManager = GetComponent<JumpscareManager>();
     }
 
     void Start()
@@ -342,6 +345,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 var _script = _hit.transform.gameObject.GetComponent<The_Witness>();
                 _script.Flashed();
+                WitnessJumpscare(_hit.transform.gameObject);
             }
             // If I hit The Brazen
             else if (_hit.transform.gameObject.tag == "The_Brazen") 
@@ -369,17 +373,22 @@ public class PlayerMovement : MonoBehaviour
             break;
 
             case "The_Follower":
-            trigger.transform.position = Vector3.up * 500;
+            // trigger.transform.position = Vector3.up * 500;
             Debug.LogError("THE FOLLOWER KILLED YOU");
+
+            FollowerJumpscare(trigger.gameObject);
+
             GameManager.KillPlayer();
             break;
 
             case "The_Witness":
             trigger.gameObject.GetComponent<The_Witness>().Flashed();
+            WitnessJumpscare(trigger.gameObject);
             break;
 
             case "The_Brazen":
             trigger.gameObject.GetComponent<The_Brazen>().KillPlayer();
+            BrazenJumpscare(trigger.gameObject);
             break;
 
             default:
@@ -432,6 +441,39 @@ public class PlayerMovement : MonoBehaviour
             case "100%":
             break;
         }
+    }
+    
+    void FollowerJumpscare(GameObject followerReference)
+    {
+        followerReference.transform.position = new Vector3(-.4f, 4.4f, transform.position.z - 2);
+        followerReference.GetComponent<AudioSource>().volume = 0f;
+
+        followerReference.GetComponent<The_Follower>().isEnabled = false;
+        GameManager.FollowerSpawned = false;
+
+        StartCoroutine(jumpscareManager.JumpscareCoroutine(followerReference, "Follower"));
+    }
+
+    void BrazenJumpscare(GameObject brazenReference)
+    {
+        brazenReference.transform.position = transform.position + Vector3.forward * 4 + Vector3.up * 4;
+        GameManager.KillPlayer();
+
+        StartCoroutine(jumpscareManager.JumpscareCoroutine(brazenReference, "Brazen"));
+    }
+
+    void WitnessJumpscare(GameObject witnessReference)
+    {
+        GameManager.KillPlayer();
+
+        StartCoroutine(jumpscareManager.JumpscareCoroutine(witnessReference, "Witness"));
+    }
+
+    void EleventhJumpscare(GameObject eleventhReference)
+    {
+        GameManager.KillPlayer();
+
+        StartCoroutine(jumpscareManager.JumpscareCoroutine(eleventhReference, "Eleventh"));
     }
 
     void SwitchTrack(InputAction.CallbackContext c )

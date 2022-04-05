@@ -149,7 +149,7 @@ public class The_Witness : MonoBehaviour
     public void Flashed()
     {
         // Temporary JustMoveInFrontOfMe
-        transform.position = PlayerRef.transform.position + Vector3.forward * 4 + Vector3.up * 4;
+        transform.position = PlayerRef.transform.position + Vector3.right * -0.5f + Vector3.forward * 2.2f + Vector3.up * 5;
 
         Debug.LogError("THE WITNESS KILLED YOU");
 

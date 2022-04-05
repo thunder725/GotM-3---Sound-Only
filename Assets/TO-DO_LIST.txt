@@ -42,13 +42,8 @@ OKAY LETSGO
 
 ================== [AUDIO] ==================
 
-	- Player steps
 	- Ambiance Sounds (x2)
-	- Follower Rushing footsteps
-	- Brazen Machinery sounds
-	- Witness Breathing
 	
-	- Main Ambiance Music x3
 	- Main menu ambiance (no music)
 	
 	- Main Menu UI Button mouseover
@@ -56,46 +51,28 @@ OKAY LETSGO
 
 ================== [CODING] ==================
 
-	- A little bit less then everything
-
 ================== [VISUALS] ==================
 
-	Placeholder Models :
-		- The Voltergeist
-		- The Follower
-		- The Brazen
-		- The Eleventh
-		- The Witness
-		- Start/End Doors
 
-	3D Models :
-			- Phone + Hand
+
+	Final Sprites :
 
 		Enemies
 			- The Voltergeist
-			- The Follower
-			- The Brazen
 			- The Eleventh
 			- The Witness
 
-		Level Builder
+		Level Builder:  ?
 			- Walls
 			- Door Walls
 			- Ceiling Tiles
 			- Ground Tiles
 			- Start/End Doors
 
-		Props:
+		Props:  ?
 			- Pipes
 			- Lights
 			- Mailboxes
-
-	Jumpscares :
-		- The Voltergeist
-		- The Follower
-		- The Brazen
-		- The Eleventh
-		- The Witness
 
 	Particles :
 		- ???

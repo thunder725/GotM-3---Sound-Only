@@ -16,6 +16,7 @@ public class PhoneScript : MonoBehaviour
     public bool isFlashReady {get{return !FlashBeaconAudio.isPlaying;}}
 
     [SerializeField] GameObject VoltergeistObject;
+    [SerializeField] JumpscareManager jumpscareManager;
     PlayerMovement playerScript;
 
     
@@ -180,7 +181,9 @@ public class PhoneScript : MonoBehaviour
     {
         Debug.LogError("VOLTERGEIST KILLED YOU");
 
-        VoltergeistObject.transform.position = transform.position + Vector3.forward * 2;
+        VoltergeistObject.transform.position = new Vector3(0, 5.35f, transform.position.z + 2);
+
+        StartCoroutine(jumpscareManager.JumpscareCoroutine(VoltergeistObject, "Voltergeist"));
 
         GameManager.KillPlayer();
     }
