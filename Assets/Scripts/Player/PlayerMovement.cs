@@ -490,8 +490,11 @@ public class PlayerMovement : MonoBehaviour
 
     void SwitchTrack(InputAction.CallbackContext c )
     {
-        eleventh.AttackDisarmed();
-        PullUpPhone();
+        if (isPhoneUp && GameManager.EleventhSpawned)
+        {
+            PullUpPhone();
+            eleventh.AttackDisarmed();
+        }
     }
 
 
