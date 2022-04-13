@@ -19630,14 +19630,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3799620130631706313, guid: 45595da852fa66b488ba16da314e2f11, type: 3}
-      propertyPath: m_Size.z
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3799620130631706313, guid: 45595da852fa66b488ba16da314e2f11, type: 3}
-      propertyPath: m_Center.x
-      value: -2.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45595da852fa66b488ba16da314e2f11, type: 3}
 --- !u!4 &1318181449 stripped
@@ -22856,7 +22848,7 @@ MonoBehaviour:
   possibleSpawningPointsObject: {fileID: 1186882135}
   forcedSpawningPointsObject: {fileID: 166487409}
   nextSpawningpoints: []
-  disparitionDistanceThreshold: 13.6
+  disparitionDistanceThreshold: 18
   timerBeforeDisparition: 3
   DisparitionSpeed: 5.2
 --- !u!82 &1535148121
@@ -22871,7 +22863,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a615dfd2c5610be4eb7662267ba7ba0b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.68
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -22880,7 +22872,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 14.5
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -22901,11 +22893,11 @@ AudioSource:
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.4580512
+      outSlope: -0.4580512
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.12931037
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -25955,7 +25947,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 15.5
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -25976,11 +25968,11 @@ AudioSource:
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -2.4145842
+      outSlope: -2.4145842
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.071839094
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
