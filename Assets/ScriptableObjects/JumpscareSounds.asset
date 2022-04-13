@@ -15,7 +15,7 @@ MonoBehaviour:
   AudioClips:
   - name: Jumpscare Sound 1
     audioClip: {fileID: 8300000, guid: 227f9b7898ecd624cbe07eecea661970, type: 3}
-    volume: .5
+    volume: 0.5
     pitch: 1
   - name: Jumpscare Sound 2
     audioClip: {fileID: 8300000, guid: befa7568e6bb3524e9c246deaa34318c, type: 3}
